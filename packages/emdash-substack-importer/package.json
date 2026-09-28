@@ -1,0 +1,30 @@
+{
+  "name": "@leostera/emdash-substack-importer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "tsdown src/index.ts --format esm --dts --clean",
+    "typecheck": "tsc --noEmit",
+    "import:substack": "bun scripts/import-substack.mjs",
+    "migrate:images": "bun scripts/migrate-substack-images.mjs",
+    "cleanup:images": "bun scripts/cleanup-substack-image-links.mjs"
+  },
+  "peerDependencies": {
+    "emdash": "^1.0.1"
+  },
+  "devDependencies": {
+    "emdash": "^1.0.1",
+    "tsdown": "^0.20.0",
+    "typescript": "^5.9.0",
+    "csv-parse": "^7.0.3",
+    "turndown": "^7.2.4"
+  }
+}

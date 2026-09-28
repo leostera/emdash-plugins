@@ -1,0 +1,11 @@
+{
+  "name": "emdash-plugins",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.4.2",
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "build": "bun --filter '*' build",
+    "typecheck": "bun --filter '*' typecheck"
+  }
+}

@@ -1,0 +1,11 @@
+node_modules/
+**/dist/
+*.tgz
+.env*
+!.env.example
+.dev.vars*
+.wrangler/
+# Exports contain subscriber email addresses and must never enter this repository.
+substack_export_archive/
+**/substack_export_archive/
+*.zip
