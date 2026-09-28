@@ -10,7 +10,7 @@
     },
     "./admin": "./src/admin/index.tsx"
   },
-  "files": ["dist", "src/admin", "README.md"],
+  "files": ["dist", "src/admin", "docs/images", "README.md"],
   "scripts": {
     "build": "tsdown src/index.ts --format esm --dts --clean",
     "typecheck": "tsc --noEmit",

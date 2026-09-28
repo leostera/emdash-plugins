@@ -1,4 +1,4 @@
-import { parse } from "csv-parse/sync";
+import { parse } from "csv-parse/browser/esm/sync";
 import { unzipSync } from "fflate";
 import TurndownService from "turndown";
 

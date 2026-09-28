@@ -2,6 +2,22 @@
 
 A native EmDash plugin that imports a Substack export ZIP through an admin page, plus the original migration CLI for larger or more complex exports. This package is **not yet published or installed on a site**.
 
+## How the admin import works
+
+These are screenshots of the **actual plugin component**, rendered in an isolated preview with a fictional three-post ZIP and mocked EmDash API responses. They show the interface, **not** a completed import on a live site.
+
+1. Download your Substack export ZIP, open the importer in EmDash, and choose or drop the ZIP. The archive stays in your browser; subscriber files are ignored.
+
+   ![Importer before selecting a Substack ZIP, with the Choose ZIP button and privacy note](docs/images/choose-zip.png)
+
+2. Review the published and draft counts and any matching slugs before writing anything. In this sample, two of three entries are new; the existing slug will be skipped.
+
+   ![Import review showing two published posts, one draft, and one existing post](docs/images/review-import.png)
+
+3. Start the import to see processed, imported, skipped, and failed counts. Images are copied before their posts are created. Pause stops after the current post. When finished, review the imported posts and any entries needing attention in EmDash.
+
+   ![Finished sample import showing two imported entries and one skipped entry](docs/images/import-finished.png)
+
 ## Install the admin UI
 
 Build this package and install it into a trusted EmDash site (the relative path is for local development; publish the package before using it from CI):
@@ -46,4 +62,4 @@ bun --filter @leostera/emdash-substack-importer cleanup:images --url=https://exa
 
 ## Future work
 
-Add integration tests on a disposable Cloudflare and Node.js site, handle exports beyond the browser and image-response limits with durable upload/storage and resume receipts, and provide an explicitly consented newsletter-list migration once a destination is chosen. This package is not registered in `leostera.com` yet.
+Before publishing to plugins.emdashcms.com, run an end-to-end import against disposable Cloudflare Workers and Node.js sites (including media, original dates, draft state, failures, and retries). Then handle exports beyond the browser and image-response limits with durable upload/storage and resume receipts, and provide an explicitly consented newsletter-list migration once a destination is chosen. This package is not registered in `leostera.com` yet.
