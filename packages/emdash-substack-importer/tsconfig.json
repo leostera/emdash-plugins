@@ -4,6 +4,7 @@
     "module": "preserve",
     "moduleResolution": "bundler",
     "strict": true,
+    "jsx": "react-jsx",
     "declaration": true,
     "skipLibCheck": true,
     "outDir": "./dist",

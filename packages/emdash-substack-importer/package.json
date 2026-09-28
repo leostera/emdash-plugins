@@ -1,30 +1,42 @@
 {
   "name": "@leostera/emdash-substack-importer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs"
-    }
+    },
+    "./admin": "./src/admin/index.tsx"
   },
-  "files": ["dist", "README.md"],
+  "files": ["dist", "src/admin", "README.md"],
   "scripts": {
     "build": "tsdown src/index.ts --format esm --dts --clean",
     "typecheck": "tsc --noEmit",
+    "test": "bun test src/admin/archive.test.ts",
     "import:substack": "bun scripts/import-substack.mjs",
     "migrate:images": "bun scripts/migrate-substack-images.mjs",
     "cleanup:images": "bun scripts/cleanup-substack-image-links.mjs"
   },
+  "dependencies": {
+    "csv-parse": "^7.0.3",
+    "fflate": "^0.8.2",
+    "turndown": "^7.2.4"
+  },
   "peerDependencies": {
-    "emdash": "^1.0.1"
+    "emdash": "^1.0.1",
+    "react": "^19.0.0",
+    "@cloudflare/kumo": "*"
   },
   "devDependencies": {
+    "@cloudflare/kumo": "^2.0.0",
+    "@types/bun": "^1.4.2",
+    "@types/react": "^19.0.0",
+    "@types/turndown": "^5.0.6",
     "emdash": "^1.0.1",
+    "react": "^19.2.4",
     "tsdown": "^0.20.0",
-    "typescript": "^5.9.0",
-    "csv-parse": "^7.0.3",
-    "turndown": "^7.2.4"
+    "typescript": "^5.9.0"
   }
 }

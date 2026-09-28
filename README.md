@@ -4,7 +4,7 @@ A Bun workspace of EmDash plugins. Each directory under `packages/` is a separat
 
 | Package | Status |
 | --- | --- |
-| [`emdash-substack-importer`](packages/emdash-substack-importer/) | Native plugin scaffold; migration CLI extracted and working. ZIP-upload admin UI is not implemented yet. |
+| [`emdash-substack-importer`](packages/emdash-substack-importer/) | Native ZIP-import admin page with preview, progress, content and image migration; CLI remains available. Not yet deployed to a site. |
 
 ```bash
 bun install
