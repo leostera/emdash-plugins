@@ -6,6 +6,8 @@ export interface ArchivePost {
 	slug: string;
 	title: string;
 	subtitle: string;
+	author?: string;
+	wordCount: number;
 	published: boolean;
 	publishedAt?: string;
 	html: string;
@@ -53,16 +55,29 @@ export function parseArchive(bytes: Uint8Array): ArchivePost[] {
 		if (published && (!row.title || !row.post_date || Number.isNaN(Date.parse(row.post_date)))) {
 			throw new Error(`Published post ${slug} lacks a title or valid publication date.`);
 		}
+		const html = decoder.decode(file);
 		return {
 			slug,
 			title: row.title || `Untitled Substack draft ${postId.split(".")[0]}`,
 			subtitle: row.subtitle || "",
+			author: row.author?.trim() || row.byline?.trim() || undefined,
+			wordCount: estimateWords(html),
 			published,
 			publishedAt: published ? row.post_date : undefined,
-			html: decoder.decode(file),
+			html,
 			type: row.type || "newsletter",
 		};
 	});
+}
+
+export function estimateWords(html: string): number {
+	// Work from the rendered text, not HTML length or image URLs. This is an
+	// approximate reading length; it does not include linked media targets.
+	const markdown = toMarkdown(html)
+		.replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+		.replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+		.replace(/https?:\/\/\S+/g, " ");
+	return markdown.match(/[\p{L}\p{N}]+(?:['’][\p{L}\p{N}]+)*/gu)?.length ?? 0;
 }
 
 export function toMarkdown(html: string): string {

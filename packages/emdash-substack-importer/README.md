@@ -10,11 +10,11 @@ These are screenshots of the **actual plugin component**, rendered in an isolate
 
    ![Importer before selecting a Substack ZIP, with the Choose ZIP button and privacy note](docs/images/choose-zip.png)
 
-2. Review the published and draft counts and any matching slugs before writing anything. In this sample, two of three entries are new; the existing slug will be skipped.
+2. Review the published and draft counts, then choose posts in the table. Search by title, slug, or author; use **Select all** or **Clear selection** for the entire archive, even when searching or viewing another page. The table shows estimated word count, status, and whether a slug is already on the site. Existing posts are visible but cannot be selected or overwritten. Standard Substack exports do **not** provide author metadata, so the author column says “Not provided” unless the archive contains one. In this sample, two of three entries are available and selected.
 
-   ![Import review showing two published posts, one draft, and one existing post](docs/images/review-import.png)
+   ![Import review table with selected posts, titles, author availability, word counts, slugs, publication status, and existing-site status](docs/images/review-import.png)
 
-3. Start the import to see processed, imported, skipped, and failed counts. Images are copied before their posts are created. Pause stops after the current post. When finished, review the imported posts and any entries needing attention in EmDash.
+3. Import only the selected posts. See processed, imported, skipped, and failed counts. Images are copied before their posts are created. Pause stops after the current post. When finished, review the imported posts and any entries needing attention in EmDash.
 
    ![Finished sample import showing two imported entries and one skipped entry](docs/images/import-finished.png)
 
@@ -38,7 +38,7 @@ import { substackImporter } from "@leostera/emdash-substack-importer";
 plugins: [substackImporter()],
 ```
 
-Build and deploy the site, then open `/_emdash/admin/plugins/emdash-substack-importer/import`. Only administrators with `plugins:manage` can use the import screen. Choose the Substack ZIP; the browser reads only `posts.csv` and matching post HTML. The screen checks the schema and existing slugs, shows published/draft/skipped counts, and waits for explicit confirmation. It imports one post at a time, copies its images to EmDash media, and shows progress and failures. Pausing finishes the current post first. On retry, existing slugs are skipped rather than overwritten.
+Build and deploy the site, then open `/_emdash/admin/plugins/emdash-substack-importer/import`. Only administrators with `plugins:manage` can use the import screen. Choose the Substack ZIP; the browser reads only `posts.csv` and matching post HTML. The screen checks the schema and existing slugs, shows a searchable, paginated selection table, and waits for explicit confirmation. It imports only selected posts, one at a time, copies their images to EmDash media, and shows progress and failures. Pausing finishes the current post first. On retry, existing slugs are skipped rather than overwritten.
 
 **Limits:** ZIP ≤32 MB compressed, ≤96 MB unpacked post files, ≤2,000 posts; remote image responses are bounded by the EmDash plugin HTTP bridge (8 MiB). Larger exports should use the CLI. Only supported JPEG, PNG, GIF, WebP, and AVIF images are copied. Newsletter subscriber CSVs are never unpacked, stored, or imported; podcast audio, comments, and complex HTML embeds are not migrated. The site must already render the chosen slug URL pattern. Review posts in the admin before announcing the migration. Failed publish calls can leave a draft that needs review before retrying.
 

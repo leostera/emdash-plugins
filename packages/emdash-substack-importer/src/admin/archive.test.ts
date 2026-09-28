@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test";
 import { strToU8, zipSync } from "fflate";
 import { markdownToPortableText } from "emdash/client";
-import { imageFallbacks, parseArchive, toMarkdown } from "./archive.js";
+import { estimateWords, imageFallbacks, parseArchive, toMarkdown } from "./archive.js";
 
 const csv = `post_id,post_date,is_published,email_sent_at,inbox_sent_at,type,audience,title,subtitle,podcast_url\n123.hello-world,2021-02-14T12:00:00.000Z,true,,,newsletter,everyone,Hello world,Welcome,\n`;
 
@@ -12,9 +12,19 @@ test("extracts posts from a wrapped Substack ZIP without reading subscribers", (
 		"export/email_list.private.csv": strToU8("email\nprivate@example.test\n"),
 	});
 	expect(parseArchive(archive)).toEqual([{
-		slug: "hello-world", title: "Hello world", subtitle: "Welcome", published: true,
+		slug: "hello-world", title: "Hello world", subtitle: "Welcome", author: undefined, wordCount: 2, published: true,
 		publishedAt: "2021-02-14T12:00:00.000Z", html: "<p>Good morning</p>", type: "newsletter",
 	}]);
+});
+
+test("estimates readable words without counting image URLs", () => {
+	expect(estimateWords('<p>Three readable words.</p><img src="https://example.com/a-very-long-image-file.jpg" alt="A photo"/>')).toBe(3);
+});
+
+test("reads an author if the export actually provides one", () => {
+	const withAuthor = csv.replace('title,subtitle,podcast_url', 'title,subtitle,author,podcast_url').replace('Hello world,Welcome,', 'Hello world,Welcome,Example Writer,');
+	const archive = zipSync({ 'posts.csv': strToU8(withAuthor), 'posts/123.hello-world.html': strToU8('<p>One sentence.</p>') });
+	expect(parseArchive(archive)[0].author).toBe('Example Writer');
 });
 
 test("rejects malformed ZIPs before writing content", () => {
