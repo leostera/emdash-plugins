@@ -1,10 +1,10 @@
 # EmDash Substack Importer
 
-A native EmDash plugin that imports a Substack export ZIP through an admin page, plus the original migration CLI for larger or more complex exports. This package is **not yet published or installed on a site**.
+A native EmDash plugin that imports a Substack export ZIP through an admin page, plus a migration CLI for larger or more complex exports.
 
 ## How the admin import works
 
-These are screenshots of the **actual plugin component**, rendered in an isolated preview with a fictional three-post ZIP and mocked EmDash API responses. They show the interface, **not** a completed import on a live site.
+Screenshots of the plugin UI using a sample three-post ZIP and simulated API responses:
 
 1. Download your Substack export ZIP, open the importer in EmDash, and choose or drop the ZIP. The archive stays in your browser; subscriber files are ignored.
 
@@ -20,9 +20,11 @@ These are screenshots of the **actual plugin component**, rendered in an isolate
 
 ## Install the admin UI
 
-Build this package and install it into a trusted EmDash site (the relative path is for local development; publish the package before using it from CI):
+Clone the repository, build the plugin, and add it to your EmDash site:
 
 ```bash
+git clone https://github.com/leostera/emdash-plugins.git
+cd emdash-plugins
 bun install
 bun run build
 cd ../your-emdash-site
@@ -59,7 +61,3 @@ bun --filter @leostera/emdash-substack-importer cleanup:images --url=https://exa
 ```
 
 `--url-pattern=/{slug}` on the import command is optional; use it only if your actual Astro pages serve posts at the root. Commands are dry-run by default. Re-running skips existing slugs and already-migrated image blocks. Unpublished posts remain drafts. The importer preserves exported publish timestamps and imports image references through EmDash media storage. The cleanup removes paragraphs produced by Substack's linked-image HTML when converting to Portable Text.
-
-## Future work
-
-Before publishing to plugins.emdashcms.com, run an end-to-end import against disposable Cloudflare Workers and Node.js sites (including media, original dates, draft state, failures, and retries). Then handle exports beyond the browser and image-response limits with durable upload/storage and resume receipts, and provide an explicitly consented newsletter-list migration once a destination is chosen. This package is not registered in `leostera.com` yet.
